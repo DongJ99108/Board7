@@ -101,7 +101,7 @@
 	    <tr>
 	      <td> ${  pds.idx      }  </td>    <!-- menu.getMenu_id() -->
 	      <td class="title"> 
-	        <a href ="/Pds/View?idx=${board.idx}&menu_id=${map.menu_id}&nowpage=${map.nowpage}">
+	        <a href ="/Pds/View?idx=${pds.idx}&menu_id=${map.menu_id}&nowpage=${map.nowpage}">
 	        ${ pds.title    }
 	        </a>  
 	      </td>
@@ -127,7 +127,7 @@
 	      <option value="content">내용</option>
 	      <option value="writer">작성자</option>
 	    </select>
-	    <input type="text" name="keyword" />
+	    <input type="text" name="keyword" value="${map.keyword }" />
 	    <input type="submit" value="검색" />
 	  </div>
 	  </form>

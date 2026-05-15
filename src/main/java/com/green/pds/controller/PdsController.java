@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.green.config.WebMvcConfig;
 import com.green.menus.dto.MenuDTO;
 import com.green.menus.mapper.MenuMapper;
 import com.green.paging.dto.Pagination;
@@ -20,6 +21,8 @@ import com.green.pds.service.PdsService;
 @Controller
 @RequestMapping("/Pds")
 public class PdsController {
+
+    private final WebMvcConfig webMvcConfig;
 	
 	@Autowired
 	private MenuMapper menuMapper;
@@ -29,6 +32,10 @@ public class PdsController {
 	
 	@Autowired
 	private PdsService pdsService;
+
+    PdsController(WebMvcConfig webMvcConfig) {
+        this.webMvcConfig = webMvcConfig;
+    }
 	
 	// /Pds/List?menu_id=MENU01&nowpage=1
 	// /Pds/List?menu_id=MENU01&nowpage=3&searchType=title&keyword=11
@@ -123,6 +130,31 @@ public class PdsController {
 		return       mv;
 	}
 	
+	// /Pds/Write
+	// text   : menu_id = MENU01, nowpage = 1, title = 1빠, writer = admin, content = kkkk -> map으로 받을 내용들
+	// binary : upfile = (binary), upfile = (binary), upfile = (binary)                    
+	@RequestMapping("/Write")
+	public ModelAndView write(
+		@RequestParam                  HashMap<String, Object>  map,
+		@RequestParam(value="upfile")  MultipartFile []         uploadfiles
+			) {
+		
+		System.out.println("map:"         + map);
+		System.out.println("uploadfiles:" + uploadfiles);
+		
+		// 넘어온 정보를 파일과 db에 저장한다.
+		pdsService.setWrite( map, uploadfiles );
+		
+		String menu_id = String.valueOf( map.get("menu_id") );
+		int    nowpage = Integer.parseInt( String.valueOf( map.get("nowpage") ) );
+		
+		ModelAndView mv    = new ModelAndView();
+		String       loc   = """
+				redirect:/Pds/List?menu_id=%s&nowpage=%d
+				""".formatted( menu_id, nowpage );
+		mv.setViewName( loc );
+		return       mv;
+	}
 	
 }
 

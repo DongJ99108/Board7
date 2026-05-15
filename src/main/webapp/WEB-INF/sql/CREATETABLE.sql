@@ -114,13 +114,11 @@ CREATE TABLE FILES
     (
        FILE_NUM,
        IDX
-    
     )                                    -- 기본키(복합키)
   , CONSTRAINTS FK_BOARD_FILES_IDX
     FOREIGN KEY (IDX)
     REFERENCES  BOARD(IDX)
     ON DELETE   CASCADE
-
 )
 
 

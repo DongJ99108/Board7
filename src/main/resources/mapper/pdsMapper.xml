@@ -16,8 +16,8 @@
 	    </if> 
 	    <if test="searchType != null and searchType != '' 
 	        and keyword != null and keyword != ''">
-	      AND ${searchType}  Like '%' || #{ keyword } || '%'   
-	    </if> 	   
+	      AND ${searchType}  Like '%' || #{ keyword } || '%'
+	    </if>
 	  </where>
 	    
 	</select>

@@ -45,11 +45,12 @@ public class PdsController {
 		// 메뉴 목록 조회
 		List<MenuDTO> menuList    = menuMapper.getMenuList(); 
 		
-		//자료실 목록 조회 (10개씩)
+		//자료실 목록 조회 (10개씩) - 페이징 처리 준비작업 시작
 		// 전체 자료 수
 		int           totalCount  =  pdsMapper.count( map ); // menus_id, searchType, keyword
 		System.out.println("totalCount:" + totalCount);
 		
+		// 현재 페이지 정보 : map{ nowpage=1 } Object -> String -> int 
 		int nowpage = Integer.parseInt( String.valueOf( map.get("nowpage") ) );
 		
 		// 페이징을 위한 설정
@@ -67,6 +68,7 @@ public class PdsController {
 		
 		map.put("offset",    offset);
 		map.put("numOfRows", numOfRows);
+		// 페이징 처리 준비작업 종료
 		
 		System.out.println("map2:" + map);
 		
@@ -96,8 +98,8 @@ public class PdsController {
 		//---------------------------------------------------------------------
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("pds/write");
-		mv.addObject("map",      map);
 		mv.addObject("menuList", menuList);
+		mv.addObject("map",      map);
 		
 		return       mv;
 	}

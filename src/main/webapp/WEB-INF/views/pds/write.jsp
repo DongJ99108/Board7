@@ -34,6 +34,9 @@
   input[name=userid] {
      width : 65%;
   }
+  #btnAddFile {
+    width : 250px;
+  }
   
   textarea {
   	width  : 100%;
@@ -47,7 +50,7 @@
   <main>
     <%@include file="/WEB-INF/include/menuspdspaging.jsp" %>  
   
-    <h2 class="h2"><b id="mname"></b> 새 글 쓰기</h2>
+    <h2 class="h2"><b id="mname"></b>자료실 새 글 쓰기</h2>
     <form  action="/Pds/Write" method="post" enctype="multipart/form-data">
      <input type="hidden" name="menu_id" value="${ map.menu_id }" />
      <input type="hidden" name="nowpage" value="${ map.nowpage }" />
@@ -55,7 +58,7 @@
       <tr>
         <td><span class="red">*</span>제목</td>
         <td>
-          <input type="text"     name="title"   />
+          <input type="text"   name="title"   />
         </td>
       </tr>
       <tr>
@@ -68,11 +71,9 @@
       </tr>
       <tr>
         <td>파일</td>
-        <td>
+        <td id="tdfile">
           <input type="button" id="btnAddFile" value="파일 추가(최대 100MByte)" /><br>
-          <div id="tdfile">
-            <input type="file"   name="upfile"   class="upfile" multiple /><br>
-          </div>
+          <input type="file"   name="upfile"   class="upfile" multiple /><br>
         </td>
       </tr>
       <tr>
@@ -103,9 +104,14 @@
       const tdfileEl     = document.querySelector('#tdfile')
       let   tag          = '<input type="file"   name="upfile"   class="upfile" multiple /><br>'
       let   html         = tdfileEl.innerHTML
-      btnAddFileEl.addEventListener('click', function() {
-    	  html               += tag
-    	  tdfileEl.innerHTML = html
+      // js에서 실행할 때 추가된 버튼은 이벤트가 한번만 작동 btnAddFileEl
+      // 해결 : 이벤트를 부모 element에 설정
+      tdfileEl.addEventListener('click', function( e ) {
+    	  console.dir(e.target) // #btnAddFile, .upfile
+    	  if( e.target.id == 'btnAddFile' ) {
+	    	  html               += tag
+	    	  tdfileEl.innerHTML  = html
+    	  }
       })
       
       // 입력항목 체크

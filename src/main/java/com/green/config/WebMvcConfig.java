@@ -25,6 +25,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		   // .addPathPatterns("/**")
 			// .addPathPatterns("/Board/**")
 		    .addPathPatterns("/Board/**", "/BoardPaging/**") // 페이징 된 보드도 무조건 로그인 후에 접속하게끔
+		    // .addPathPatterns("/Board/**", "/BoardPaging/**", "/Pds/**")
 		    .excludePathPatterns("/css/**", "/img/**", "/js/**");
 				
 		WebMvcConfigurer.super.addInterceptors(registry);

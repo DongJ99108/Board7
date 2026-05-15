@@ -22,12 +22,12 @@
      </c:if> 
     
       <c:forEach var="pagenum" begin="${startnum}" end="${endnum}" step="1">
-      <c:if test="${ pagenum le totalpagecount }">
-        <td>
-          <a href="/Pds/List?menu_id=${map.menu_id}&nowpage=${pagenum}&searchType=${map.searchType}&keyword=${map.keyword}" class="${pagenum eq map.nowpage ? 'active' : ''}">
-          ${ pagenum }
-          </a>
-        </td>
+        <c:if test="${ pagenum le totalpagecount }">
+          <td>
+            <a href="/Pds/List?menu_id=${map.menu_id}&nowpage=${pagenum}&searchType=${map.searchType}&keyword=${map.keyword}" class="${pagenum eq map.nowpage ? 'active' : ''}">
+            ${ pagenum }
+            </a>
+          </td>
         </c:if>
       </c:forEach>
      

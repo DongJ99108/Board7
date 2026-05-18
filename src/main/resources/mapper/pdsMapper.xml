@@ -52,7 +52,55 @@
 	    
 	</select>
 	
+	<!-- setWrite : Board 에 저장 -->
+	<select id="setWrite">
+	  INSERT INTO BOARD (
+	    IDX,
+	    MENU_ID,
+	    TITLE,
+	    CONTENT,
+	    WRITER,
+	    REGDATE,
+	    HIT
+	  )
+	   VALUES (
+	     ( SELECT NVL( MAX(IDX), 0 )+1 FROM BOARD ),
+	     #{ menu_id },
+	     #{ title   },
+	     #{ content },
+	     #{ writer  },
+	     SYSDATE,
+	     0
+	  )
+	</select>
 	
+	
+	<!-- 
+	  setFileWriter : Files 에 insert 
+	  insert all : 한번에 여러줄을 insert 할 수 있는 명령
+	-->
+	<insert id="setFileWriter">
+	  
+	  
+	  <foreach collection ="fileList" 
+	           item       = "file"
+	           index      = "i"
+	           open       = "INSERT ALL"
+	           close      = "SELECT * FROM DUAL" 
+	           separator  = " " >
+	  
+	    INTO  FILES  VALUES(
+	      	FILE_NUM,
+			( SELECT MAX( IDX ) FROM BOARD ),
+			${ file.filename  },
+			${ file.fileext   },
+			${ file.sfilename }
+	    )
+	  
+	  </foreach>
+	  
+	  
+	</insert>
 	
 	
 </mapper>

@@ -37,13 +37,13 @@ public class PdsFile {
 			// d:\\2026\\dev\\springboot\\data\\data.abc.txt : 업로드된 파일 정보
 			// d:/2026/dev/springboot/data/data.abc.txt 
 			String fileName = 
-					( orgName.lastIndexOf("\\") < 0 )   // 못찾으면 -1이라서 < 0 조건에 충족한다는 것은 못찾겠다 꾀고리라는 뜻
+					( orgName.lastIndexOf("\\") < 0 )   // '\' 못찾으면 -1이라서 < 0 조건에 충족한다는 것은 못찾겠다 꾀고리라는 뜻
 					? orgName
 					: orgName.substring( orgName.lastIndexOf("\\") + 1 ) // data.abc.txt
 					;
 			
 			String fileExt  = 
-					( orgName.lastIndexOf(".") < 0 )   // 못찾으면 -1이라서 < 0 조건에 충족한다는 것은 못찾겠다 꾀고리라는 뜻
+					( orgName.lastIndexOf(".") < 0 )    // '.' 못찾으면 -1이라서 < 0 조건에 충족한다는 것은 못찾겠다 꾀고리라는 뜻
 					? " "
 					: orgName.substring( orgName.lastIndexOf(".") ) // .txt
 					;
@@ -54,13 +54,16 @@ public class PdsFile {
 			String folderPath = makeFolder( uploadPath );
 			
 			// 파일 중복 방지 : 같은 폴더에 같은 파일명을 저장하면 마지막 저장된 파일로 변경
-			// 중복되지 않는 고유한 문자열 생성 : UUID
+			// 전세계에서 유일하고 중복되지 않는 고유한 문자열 생성 : UUID
 			String uuid       = UUID.randomUUID().toString();
 			
 			// 저장할 sfilename 생성
+			// File.separator : "\\" , "/"
+			// saveName  : 실제 저장될 서버의 경로 + 생성된 날짜형 폴더명 + UUID + 파일명
 			String saveName  = uploadPath + File.separator
 					         + folderPath + File.separator
 					         + uuid       + "." + fileName; // 실제 저장될 파일명
+			// saveName2 : 생성된 날짜형 폴더명 + UUID + 파일명
 			String saveName2 = folderPath + File.separator
 					         + uuid       + "." + fileName; // sfilename
 			

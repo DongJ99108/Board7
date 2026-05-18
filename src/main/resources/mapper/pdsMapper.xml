@@ -78,6 +78,7 @@
 	<!-- 
 	  setFileWriter : Files 에 insert 
 	  insert all : 한번에 여러줄을 insert 할 수 있는 명령
+	      	( SELECT NVL( MAX( FILE_NUM ), 0 )+1 FROM FILES ), -> 한번만 실행 : 무결성 제약조건 에러 발생
 	-->
 	<insert id="setFileWriter">
 	  
@@ -90,11 +91,11 @@
 	           separator  = " " >
 	  
 	    INTO  FILES  VALUES(
-	      	FILE_NUM,
+	        ( SELECT NVL( MAX( FILE_NUM ), 0 ) FROM FILES ) + #{i} + 1,
 			( SELECT MAX( IDX ) FROM BOARD ),
-			${ file.filename  },
-			${ file.fileext   },
-			${ file.sfilename }
+			#{ file.filename  },
+			#{ file.fileext   },
+			#{ file.sfilename }
 	    )
 	  
 	  </foreach>

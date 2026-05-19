@@ -2,6 +2,7 @@ package com.green.pds.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,6 +102,14 @@ public class PdsServiceImpl implements PdsService {
 		FilesDto fileInfo = pdsMapper.getFileInfo(file_num); 
 		
 		return   fileInfo;
+	}
+
+	// 
+	@Override
+	public void setDelete(Map<String, Object> map) {
+		
+		
+		
 	}
 	
 }

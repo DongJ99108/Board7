@@ -73,7 +73,7 @@
         <td>파일</td>
         <td id="tdfile">
           <input type="button" id="btnAddFile" value="파일 추가(최대 100MByte)" /><br>
-          <input type="file"   name="upfile"   class="upfile" multiple /><br>
+          <input type="file"   name="upfile"   class="upfile" multiple /><br> <!-- multiple 속성이 있으면 여러개의 파일을 한번에 선택할 수 있다. -->
         </td>
       </tr>
       <tr>

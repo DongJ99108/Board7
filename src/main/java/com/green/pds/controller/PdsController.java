@@ -10,11 +10,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -180,19 +182,39 @@ public class PdsController {
 		return       mv;
 	}
 	
+	
+	// /Pds/Delete?idx=821&menu_id=MENU01&nowpage=1
+	@RequestMapping("/Delete")
+	public ModelAndView delete( @RequestParam Map<String, Object> map ) { // HashMap 을 안쓰는 이유? : 부모가 Map 이고 그걸 상속받은게 HashMap 근데 이건 상속받은게 아니니...
+		
+		System.out.println( "delete map:" + map );
+		
+		// DB 에서 자료 삭제
+		pdsService.setDelete( map );
+		
+		// 삭제 이후에 목록조회로 돌아가기
+		ModelAndView mv    = new ModelAndView();
+		String       loc   = "redirect:/Pds/List" 
+							+ "?menu_id=" + map.get("menu_id")
+		                    + "&nowpage=" + map.get("nowpage");
+		mv.setViewName( loc );
+		
+		return       mv;
+	}
+	
+	
 	// -----------------------------------------------------------------------
 	// 파일 다운로드
 	// 서버에서 바이너리 데이터를 다운받는다 : data 덩어리
 	// -----------------------------------------------------------------------
-	// /Pds/filedownload
-	@RequestMapping("/filedownload/{file_num}")
+	// /Pds/filedownload/1
+	@GetMapping("/filedownload/{file_num}")    // ?file_num=1
 	@ResponseBody     // 내려주는 것은 data 다
 	public   void downloadFile(
 		HttpServletResponse                       res,
 		@PathVariable(value="file_num")   Long    file_num
 			) throws UnsupportedEncodingException {
-		// HttpServletResponse 객체를 사용하면 return 문 없이도 data 를 서버 
-		// -> 클라이언트로 보낼 수 있다.
+		// HttpServletResponse 객체를 사용하면 return 문 없이도 data 를 서버 -> 클라이언트로 보낼 수 있다.
 		
 		FilesDto  fileInfo  =  pdsService.getFileInfo( file_num );
 		
@@ -204,7 +226,7 @@ public class PdsController {
 				);
 		
 		// http 헤더 설정 : 클라이언트 브라우저에게 주는 정보
-		setFileHeader(res, fileInfo);
+		setFileHeader( res, fileInfo );
 		
 		// 파일 복사 -> 함수 ( 서버 -> 클라이언트 ) : 실제 다운로드
 		fileCopy( res, saveFilePath );
@@ -246,7 +268,6 @@ public class PdsController {
 		response.setHeader("Content-Type", "application/octet-stream; utf-8"); // hwp 연결 프로그램 작동
 		response.setHeader("Pragma", "no-cache;");
 		response.setHeader("Expires", "-1");
-		
 		
 	}
 	

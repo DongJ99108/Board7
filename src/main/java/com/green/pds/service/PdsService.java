@@ -23,6 +23,6 @@ public interface PdsService {
 
 	FilesDto getFileInfo(Long file_num);
 
-	void setDelete(Map<String, Object> map);
+	void setDelete(HashMap<String, Object> map);
 
 }

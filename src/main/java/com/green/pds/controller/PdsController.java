@@ -185,12 +185,13 @@ public class PdsController {
 	
 	// /Pds/Delete?idx=821&menu_id=MENU01&nowpage=1
 	@RequestMapping("/Delete")
-	public ModelAndView delete( @RequestParam Map<String, Object> map ) { // HashMap 을 안쓰는 이유? : 부모가 Map 이고 그걸 상속받은게 HashMap 근데 이건 상속받은게 아니니...
+	public ModelAndView delete( @RequestParam HashMap<String, Object> map ) { // HashMap 을 안쓰는 이유? : 부모가 Map 이고 그걸 상속받은게 HashMap 근데 이건 상속받은게 아니니...
 		
 		System.out.println( "delete map:" + map );
 		
 		// DB 에서 자료 삭제
 		pdsService.setDelete( map );
+		
 		
 		// 삭제 이후에 목록조회로 돌아가기
 		ModelAndView mv    = new ModelAndView();
@@ -198,7 +199,6 @@ public class PdsController {
 							+ "?menu_id=" + map.get("menu_id")
 		                    + "&nowpage=" + map.get("nowpage");
 		mv.setViewName( loc );
-		
 		return       mv;
 	}
 	

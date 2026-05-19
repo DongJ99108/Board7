@@ -182,7 +182,6 @@ public class PdsController {
 		return       mv;
 	}
 	
-	
 	// /Pds/Delete?idx=821&menu_id=MENU01&nowpage=1
 	@RequestMapping("/Delete")
 	public ModelAndView delete( @RequestParam HashMap<String, Object> map ) { // HashMap 을 안쓰는 이유? : 부모가 Map 이고 그걸 상속받은게 HashMap 근데 이건 상속받은게 아니니...
@@ -191,7 +190,6 @@ public class PdsController {
 		
 		// DB 에서 자료 삭제
 		pdsService.setDelete( map );
-		
 		
 		// 삭제 이후에 목록조회로 돌아가기
 		ModelAndView mv    = new ModelAndView();
@@ -202,6 +200,49 @@ public class PdsController {
 		return       mv;
 	}
 	
+	// /Pds/UpdateForm?idx=821&menu_id=MENU01&nowpage=1
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm( @RequestParam HashMap<String, Object> map ) {
+		
+		// 메뉴 목록
+		List<MenuDTO>  menuList = menuMapper.getMenuList();
+		
+		// 수정할 Board 정보 idx 로 검색
+		PdsDto         pds      = pdsService.getPds( map );
+		
+		// 수정할 Files 정보 idx 로 검색
+		List<FilesDto> fileList = pdsService.getFileList( map ); 
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("pds/update");
+		mv.addObject("menuList", menuList);
+		mv.addObject("pds",      pds     );
+		mv.addObject("fileList", fileList);
+		
+		mv.addObject("map",      map     );
+		return mv;
+	}
+	
+	// /Pds/Update
+	// map {idx=818, menu_id=MENU01, nowpage=1, title=지울글을 수정, content=수정}
+	// MultipartFile [] { upfile=(binary) }
+	@RequestMapping("/Update")
+	public ModelAndView update( 
+		@RequestParam HashMap<String, Object> map,
+		@RequestParam(value="upfile") MultipartFile [] uploadfiles
+			) {
+		
+		// 필요한 정보 수정
+		pdsService.setUpdate(map, uploadfiles);
+		
+		// 돌아갈 주소
+		ModelAndView mv  = new ModelAndView();
+		String       loc = "redirect:/Pds/List?"
+						 + "menu_id="  + map.get("menu_id")
+						 + "&nowpage=" + map.get("nowpage");
+		mv.setViewName(loc);
+		return mv;
+	}
 	
 	// -----------------------------------------------------------------------
 	// 파일 다운로드

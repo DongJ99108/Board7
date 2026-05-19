@@ -118,7 +118,7 @@ public class PdsFile {
 		return folderPath;
 	}
 
-	// 실제 파일 삭제 : fileList 에 있는 여러 팡리
+	// 실제 파일 삭제 : fileList 에 있는 여러 파일
 	public static void delete(String uploadPath, List<FilesDto> fileList) {
 		
 		String path = uploadPath; // D:/2026/dev/springboot/data

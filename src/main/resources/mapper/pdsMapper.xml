@@ -181,6 +181,16 @@
 	  
 	</delete>
 	
+	<!-- setUpdate : idx 에 해당하는 Board 정보를 수정 -->
+	<update id="setUpdate">
+	  
+	  UPDATE BOARD
+	   SET   TITLE   = #{ title   }
+	        ,CONTENT = #{ content }
+	   WHERE IDX = #{idx}
+	  
+	</update>
+	
 </mapper>
 
 
